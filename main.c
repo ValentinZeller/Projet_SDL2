@@ -11,6 +11,11 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     //Initialisation d'un pointeur de type texture
     SDL_Texture *pTexture=NULL;
 
+    //Initialisation d'un rectangle {position horizontale, position verticale, largeur, hauteur)
+    SDL_Rect rect = {10,10,200,200};
+    //Initialisation d'un point {position horizontale, position verticale}
+    SDL_Point point = {15,30};
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0){
     //SDL_Init permet d'initialiser la SDL
     //SDL_INIT_VIDEO est le sous-système pour l'affichage raphique
