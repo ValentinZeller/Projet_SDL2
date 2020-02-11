@@ -25,14 +25,33 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
         //SDL_WINDOWS_CENTERED permet de centrer la fenêtre
         //SDL_WINDOW_RESIZABLE permet de changer la taille de la fenêtre pendant l'execution
 
-    if (pWindow == NULL)  //Si la fenêtre est vide, on stop le programme
-    {
-        printf("Erreur lors de la creation d'une fenetre : %s", SDL_GetError());
+    if (pWindow == NULL) { //Si la fenêtre est vide, on stop le programme
+        printf("Erreur lors de la creation d'une fenetre : %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
 
+    pRenderer = SDL_CreateRenderer(pWindow,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    //Création du renderer avec SDL_CreateRenderer(pointeur de fenêtre,index, flags)
+    //l'index -1 permet de sélectionner le premier driver qui gére le rendu
+    //SDL_RENDERER_ACCELERATED permet d'utiliser l'accélération matérielle
+    //SDL_RENDERER_PRESENTVSYNC permet de synchroniser le renderer sur le taux de raffraichissement
+
+    //Il est aussi possible d'utiliser SDL_CreateWindowAndRenderer pour créer la fenêtre et son renderer
+
+    if (pRenderer == NULL) {//Si le renderer est vide, on stop le programme
+        printf("Erreur lors de la création du render : %s\n",SDL_GetError());
+        return EXIT_FAILURE;
+
+    }
+    SDL_SetRenderDrawColor(pRenderer, 0,0,255,255);//Définit une couleur (ici le bleu)
+    SDL_RenderClear(pRenderer);//Applique la couleur sur tout l'écran
+
+
+    SDL_RenderPresent(pRenderer);//Fait un rendu
     SDL_Delay(3000);  //Pause de 3 secondes pour voir la fenêtre
 
+
+    SDL_DestroyRenderer(pRenderer); //Suppression du renderer
     SDL_DestroyWindow(pWindow); //Suppression de la fenêtre
     SDL_Quit();  //Fin de la SDL
     return 0;
