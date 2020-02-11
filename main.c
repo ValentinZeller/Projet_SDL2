@@ -48,7 +48,10 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
         return EXIT_FAILURE;
 
     }
-    SDL_SetRenderDrawColor(pRenderer, 0,0,255,255);//Définit une couleur (ici le bleu)
+    SDL_SetRenderDrawColor(pRenderer, 0,0,255,255);//Définit une couleur pour dessiner(ici le bleu)
+
+    //Possibilité de créer une couleur avec le type SDL_Color
+    //Posibilité de récupérer la couleur utilisée pour dessinger avec SDL_GetRenderDrawColor
     SDL_RenderClear(pRenderer);//Applique la couleur sur tout l'écran
 
 
