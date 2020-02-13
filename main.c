@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "SDL2/SDL.h" //Appel de la bibliothèque SDL2
 
+void SDL_DrawOctants(SDL_Renderer *pRenderer, int nCentreX,int nCentreY, int x, int y);
+void SDL_DrawCircle(SDL_Renderer * pRenderer, int nCentreX, int nCentreY, int nRadius);
+void SDL_DrawFilledCircle(SDL_Renderer* pRenderer, int nCentreX,int nCentreY, int nRadius);
+
 int main(int argc, char *argv[]) //Modification du main pour inclure le main de la SDL2
 {
     //Initialisation d'un pointeur de type fenêtre
@@ -12,9 +16,9 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     SDL_Texture *pTexture=NULL;
 
     //Initialisation d'un rectangle {position horizontale, position verticale, largeur, hauteur)
-    SDL_Rect rect = {10,10,200,200};
+    SDL_Rect rect = {10,10,100,100};
     //Initialisation d'un point {position horizontale, position verticale}
-    SDL_Point point = {15,30};
+    SDL_Point point = {0,0};
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0){
     //SDL_Init permet d'initialiser la SDL
@@ -54,13 +58,94 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     //Posibilité de récupérer la couleur utilisée pour dessinger avec SDL_GetRenderDrawColor
     SDL_RenderClear(pRenderer);//Applique la couleur sur tout l'écran
 
-
+    SDL_SetRenderDrawColor(pRenderer,0,0,0,255);
+    SDL_RenderDrawRect(pRenderer,&rect);//Dessine le rectangle
     SDL_RenderPresent(pRenderer);//Fait un rendu
-    SDL_Delay(3000);  //Pause de 3 secondes pour voir la fenêtre
+    SDL_Delay(1500);  //Pause de 1.5 secondes pour voir la fenêtre
 
+    SDL_RenderFillRect(pRenderer,&rect);//Remplissage du rectangle de la couleur noir
+    SDL_RenderPresent(pRenderer);//Fait un rendu//Dessin d'un cercle à l'aide de l'Algorithme de Bresenhams
+    SDL_Delay(1500);  //Pause de 1.5 secondes pour voir la fenêtre
+
+    SDL_SetRenderDrawColor(pRenderer, 255,0,0,255);//Définit une couleur pour dessiner(ici le rouge)
+    SDL_RenderClear(pRenderer);//Applique la couleur sur tout l'écran
+    SDL_SetRenderDrawColor(pRenderer, 0,0,0,255);
+
+    SDL_DrawCircle(pRenderer,100,100,40);//Dessin du cercle
+    SDL_RenderPresent(pRenderer);//Fait un rendu
+    SDL_Delay(1500);  //Pause de 1.5 secondes pour voir la fenêtre
+
+    SDL_DrawFilledCircle(pRenderer,100,100,40);//Remplissage du cercle
+    SDL_RenderPresent(pRenderer);//Fait un rendu
+    SDL_Delay(1500);  //Pause de 1.5 secondes pour voir la fenêtre
 
     SDL_DestroyRenderer(pRenderer); //Suppression du renderer
     SDL_DestroyWindow(pWindow); //Suppression de la fenêtre
     SDL_Quit();  //Fin de la SDL
     return 0;
+}
+
+//Dessin des 8 points (octants) de l'algorime de Bresenhams pour le circle
+void SDL_DrawOctants(SDL_Renderer *pRenderer, int nCentreX,int nCentreY, int x, int y) {
+    SDL_RenderDrawPoint(pRenderer,nCentreX+x,nCentreY+y);
+    SDL_RenderDrawPoint(pRenderer,nCentreX-x,nCentreY+y);
+    SDL_RenderDrawPoint(pRenderer,nCentreX+x,nCentreY-y);
+    SDL_RenderDrawPoint(pRenderer,nCentreX-x,nCentreY-y);
+    SDL_RenderDrawPoint(pRenderer,nCentreX+y,nCentreY+x);
+    SDL_RenderDrawPoint(pRenderer,nCentreX-y,nCentreY+x);
+    SDL_RenderDrawPoint(pRenderer,nCentreX+y,nCentreY-x);
+    SDL_RenderDrawPoint(pRenderer,nCentreX-y,nCentreY-x);
+}
+
+//Dessin d'un cercle à l'aide de l'Algorithme de Bresenhams
+void SDL_DrawCircle(SDL_Renderer * pRenderer, int nCentreX, int nCentreY, int nRadius) {
+    int x = 0;
+    int y = 0;
+    int d;
+    d = 3 - 2*nRadius;
+    y = nRadius;
+
+    SDL_DrawOctants(pRenderer,nCentreX,nCentreY,x,y);
+    while (y >= x) {
+        x++;
+        if (d > 0) {
+            y--;
+            d = d +  4*(x-y)+10;
+        } else {
+            d = d + 4*x + 6;
+        }
+        SDL_DrawOctants(pRenderer,nCentreX,nCentreY,x,y);
+    }
+}
+
+//Dessin d'un cercle rempli à l'aide de l'Algorithme de Bresenhams
+void SDL_DrawFilledCircle(SDL_Renderer* pRenderer, int nCentreX,int nCentreY, int nRadius){
+    int x = 0;
+    int y = 0;
+    int d;
+    d = 3 - 2*nRadius;
+    y = nRadius;
+
+    SDL_DrawOctants(pRenderer,nCentreX,nCentreY,x,y);
+    //Lignes horizontales entre les octants
+    SDL_RenderDrawLine(pRenderer,nCentreX - x,nCentreY - y, nCentreX + x,nCentreY - y);
+    SDL_RenderDrawLine(pRenderer,nCentreX - y,nCentreY + x, nCentreX + y,nCentreY + x);
+    SDL_RenderDrawLine(pRenderer,nCentreX - y,nCentreY - x, nCentreX + y,nCentreY - x);
+    SDL_RenderDrawLine(pRenderer,nCentreX - x,nCentreY + y, nCentreX + x,nCentreY + y);
+
+    while (y >= x) {
+        x++;
+        if (d > 0) {
+            y--;
+            d = d +  4*(x-y)+10;
+        } else {
+            d = d + 4*x + 6;
+        }
+        SDL_DrawOctants(pRenderer,nCentreX,nCentreY,x,y);
+        //Lignes horizontales entre les octants
+        SDL_RenderDrawLine(pRenderer,nCentreX - x,nCentreY - y, nCentreX + x,nCentreY - y);
+        SDL_RenderDrawLine(pRenderer,nCentreX - y,nCentreY + x, nCentreX + y,nCentreY + x);
+        SDL_RenderDrawLine(pRenderer,nCentreX - y,nCentreY - x, nCentreX + y,nCentreY - x);
+        SDL_RenderDrawLine(pRenderer,nCentreX - x,nCentreY + y, nCentreX + x,nCentreY + y);
+    }
 }
