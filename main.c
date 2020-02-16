@@ -12,13 +12,15 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     SDL_Window *pWindow=NULL;
     //Initialisation d'un pointeur de type renderer
     SDL_Renderer *pRenderer=NULL;
-    //Initialisation d'un pointeur de type texture
-    SDL_Texture *pTexture=NULL;
 
     //Initialisation d'un rectangle {position horizontale, position verticale, largeur, hauteur)
     SDL_Rect rect = {10,10,100,100};
     //Initialisation d'un point {position horizontale, position verticale}
     SDL_Point point = {0,0};
+
+
+    //Initialisation d'un pointeur de type surface
+    SDL_Surface *pSurface= NULL;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0){
     //SDL_Init permet d'initialiser la SDL
@@ -52,33 +54,16 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
         return EXIT_FAILURE;
 
     }
-    SDL_SetRenderDrawColor(pRenderer, 255,0,0,255);//Définit une couleur pour dessiner(ici le rouge)
 
-    //Possibilité de créer une couleur avec le type SDL_Color
-    //Posibilité de récupérer la couleur utilisée pour dessinger avec SDL_GetRenderDrawColor
-    SDL_RenderClear(pRenderer);//Applique la couleur sur tout l'écran
+    pSurface = SDL_CreateRGBSurface(0,100,100,32,0,0,0,0);
+    //Création de la surface avec SDL_CreateRGBSurface
 
-    SDL_SetRenderDrawColor(pRenderer,0,0,0,255);
-    SDL_RenderDrawRect(pRenderer,&rect);//Dessine le rectangle
-    SDL_RenderPresent(pRenderer);//Fait un rendu
-    SDL_Delay(1500);  //Pause de 1.5 secondes pour voir la fenêtre
+    if(pSurface == NULL) {
+        printf("La creation de la surface a echoue : %s", SDL_GetError());
+        return EXIT_FAILURE;
+    }
 
-    SDL_RenderFillRect(pRenderer,&rect);//Remplissage du rectangle de la couleur noir
-    SDL_RenderPresent(pRenderer);//Fait un rendu//Dessin d'un cercle à l'aide de l'Algorithme de Bresenhams
-    SDL_Delay(1500);  //Pause de 1.5 secondes pour voir la fenêtre
-
-    SDL_SetRenderDrawColor(pRenderer, 255,0,0,255);//Définit une couleur pour dessiner(ici le rouge)
-    SDL_RenderClear(pRenderer);//Applique la couleur sur tout l'écran
-    SDL_SetRenderDrawColor(pRenderer, 0,0,0,255);
-
-    SDL_DrawCircle(pRenderer,100,100,40);//Dessin du cercle
-    SDL_RenderPresent(pRenderer);//Fait un rendu
-    SDL_Delay(1500);  //Pause de 1.5 secondes pour voir la fenêtre
-
-    SDL_DrawFilledCircle(pRenderer,100,100,40);//Remplissage du cercle
-    SDL_RenderPresent(pRenderer);//Fait un rendu
-    SDL_Delay(1500);  //Pause de 1.5 secondes pour voir la fenêtre
-
+    SDL_FreeSurface(pSurface);
     SDL_DestroyRenderer(pRenderer); //Suppression du renderer
     SDL_DestroyWindow(pWindow); //Suppression de la fenêtre
     SDL_Quit();  //Fin de la SDL
