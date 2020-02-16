@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     SDL_Renderer *pRenderer=NULL;
 
     //Initialisation d'un rectangle {position horizontale, position verticale, largeur, hauteur)
-    SDL_Rect rect = {10,10,100,100};
+    SDL_Rect rect = {0,0,100,100};
     //Initialisation d'un point {position horizontale, position verticale}
     SDL_Point point = {0,0};
 
@@ -58,10 +58,24 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     pSurface = SDL_CreateRGBSurface(0,100,100,32,0,0,0,0);
     //Création de la surface avec SDL_CreateRGBSurface
 
+    pSurface = SDL_GetWindowSurface(pWindow);
+    //Surface de la fenêtre
+
     if(pSurface == NULL) {
         printf("La creation de la surface a echoue : %s", SDL_GetError());
         return EXIT_FAILURE;
     }
+
+    Uint32 color = SDL_MapRGB(pSurface->format,255,100,0);
+    //Couleur qui va être apppliquée sur la surface, ici du orange
+
+    SDL_FillRect(pSurface,NULL, color);
+    //SDL_FillRect permet de remplir la surface d'une couleur
+
+    SDL_UpdateWindowSurface(pWindow);
+    //Mise à jour de l'affichage
+
+    SDL_Delay(1500);
 
     SDL_FreeSurface(pSurface);
     SDL_DestroyRenderer(pRenderer); //Suppression du renderer
