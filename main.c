@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
 {
     SDL_Window *pWindow=NULL;
     SDL_Renderer *pRenderer=NULL;
-    SDL_Rect rect = {0,0,100,100};
+    SDL_Rect rect = {0,0,100,100}, dist = {0,0,0,0};
     SDL_Surface *pSurface= NULL;
 
     /* Initialisation d'une texture */
@@ -60,7 +60,10 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
 
     SDL_SetRenderTarget(pRenderer, NULL); //Fin du dessin sur la texture
 
-    SDL_RenderCopy(pRenderer, pTexture, NULL, &rect);
+    SDL_QueryTexture(pTexture,NULL,NULL,&dist.w,&dist.h);
+    //Récupération de la largeur et de la hauteur de la texture avec SDL_QueryTexture(texture,format de pixel,restriction d'accès,largeur(pointeur pour stocker),hauteur(pointeur pour stocker))
+
+    SDL_RenderCopy(pRenderer, pTexture, NULL, &dist);
     //Affichage de la texture avec SDL_RenderCopy(renderer,texture,partie de la texture à afficher ,zone où est affiché la texture)
 
     SDL_RenderPresent(pRenderer);
