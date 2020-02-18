@@ -36,13 +36,14 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
 
     }
 
-    pSurface = SDL_GetWindowSurface(pWindow);
+    pSurface = SDL_LoadBMP("minecraft.bmp");//Charger une image
+
     if(pSurface == NULL) {
         printf("La creation de la surface a echoue : %s", SDL_GetError());
         return EXIT_FAILURE;
     }
 
-    SDL_RenderPresent(pRenderer);
+    SDL_RenderPresent(pRenderer);//L'image ne sera pas affichée car il faut convertir la surface en texture
     SDL_Delay(1500);
 
     pTexture = SDL_CreateTexture(pRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,100,100);
@@ -51,14 +52,8 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
         Accès : Permet d'utiliser la texture comme cible de rendu (comme un renderer)
     */
 
-    SDL_SetRenderDrawColor(pRenderer,255,0,0,255);
 
-    SDL_SetRenderTarget(pRenderer,pTexture);
-    /* Dessin sur la texture */
 
-    SDL_RenderFillRect(pRenderer, &rect);
-
-    SDL_SetRenderTarget(pRenderer, NULL); //Fin du dessin sur la texture
 
     SDL_QueryTexture(pTexture,NULL,NULL,&dist.w,&dist.h);
     //Récupération de la largeur et de la hauteur de la texture avec SDL_QueryTexture(texture,format de pixel,restriction d'accès,largeur(pointeur pour stocker),hauteur(pointeur pour stocker))
@@ -66,7 +61,7 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     SDL_RenderCopy(pRenderer, pTexture, NULL, &dist);
     //Affichage de la texture avec SDL_RenderCopy(renderer,texture,partie de la texture à afficher ,zone où est affiché la texture)
 
-    SDL_RenderPresent(pRenderer);
+    //SDL_RenderPresent(pRenderer);
 
     SDL_Delay(1500);
 
