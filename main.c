@@ -63,11 +63,12 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
 
     SDL_Delay(1500);
 
-
-    SDL_DestroyTexture(pTexture);
-    SDL_FreeSurface(pSurface);
+    /* Libération des instances */
+    SDL_DestroyTexture(pTexture); //Suppression de la texture
+    SDL_FreeSurface(pSurface); //Suppression de la surface
     SDL_DestroyRenderer(pRenderer); //Suppression du renderer
     SDL_DestroyWindow(pWindow); //Suppression de la fenêtre
+
     SDL_Quit();  //Fin de la SDL
     return 0;
 }
