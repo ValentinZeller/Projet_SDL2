@@ -42,6 +42,9 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
         return EXIT_FAILURE;
     }
 
+    SDL_RenderPresent(pRenderer);
+    SDL_Delay(1500);
+
     pTexture = SDL_CreateTexture(pRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,100,100);
     /* Création de la texture avec SDL_CreateTexture(renderer, format de pixel, restriction d'accès, largeur, hauteur)
         Format : RGBA
@@ -57,7 +60,11 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
 
     SDL_SetRenderTarget(pRenderer, NULL); //Fin du dessin sur la texture
 
-    SDL_RenderPresent(pRenderer); //Pour le moment on ne voit pas la texture
+    SDL_RenderCopy(pRenderer, pTexture, NULL, &rect);
+    //Affichage de la texture avec SDL_RenderCopy(renderer,texture,partie de la texture à afficher ,zone où est affiché la texture)
+
+    SDL_RenderPresent(pRenderer);
+
     SDL_Delay(1500);
 
 
