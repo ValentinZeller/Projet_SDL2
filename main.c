@@ -8,45 +8,28 @@ void SDL_DrawFilledCircle(SDL_Renderer* pRenderer, int nCentreX,int nCentreY, in
 
 int main(int argc, char *argv[]) //Modification du main pour inclure le main de la SDL2
 {
-    //Initialisation d'un pointeur de type fenêtre
     SDL_Window *pWindow=NULL;
-    //Initialisation d'un pointeur de type renderer
     SDL_Renderer *pRenderer=NULL;
-
-    //Initialisation d'un rectangle {position horizontale, position verticale, largeur, hauteur)
     SDL_Rect rect = {0,0,100,100};
-
-    //Initialisation d'un pointeur de type surface
     SDL_Surface *pSurface= NULL;
-    SDL_Surface *pSurfaceSrc = NULL;
+
+    /* Initialisation d'une texture */
+    SDL_Texture *pTexture = NULL;
+
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0){
-    //SDL_Init permet d'initialiser la SDL
-    //SDL_INIT_VIDEO est le sous-système pour l'affichage raphique
-    //Si SDL_Init renvoit -1, on affiche l'erreur et on stop le programme
         printf("SDL_Init Error: %s\n",SDL_GetError());;
         return 1;
     }
 
     pWindow = SDL_CreateWindow("Une fenetre SDL",SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_RESIZABLE);
-        // Création de la fenêtre avec SDL_CreateWindow (titre de la fenêtre, position horizontale, position verticale, largeur, hauteur et les flags
-        //SDL_WINDOWS_CENTERED permet de centrer la fenêtre
-        //SDL_WINDOW_RESIZABLE permet de changer la taille de la fenêtre pendant l'execution
-
     if (pWindow == NULL) { //Si la fenêtre est vide, on stop le programme
         printf("Erreur lors de la creation d'une fenetre : %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
 
     pRenderer = SDL_CreateRenderer(pWindow,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    //Création du renderer avec SDL_CreateRenderer(pointeur de fenêtre,index, flags)
-    //l'index -1 permet de sélectionner le premier driver qui gére le rendu
-    //SDL_RENDERER_ACCELERATED permet d'utiliser l'accélération matérielle
-    //SDL_RENDERER_PRESENTVSYNC permet de synchroniser le renderer sur le taux de raffraichissement
-
-    //Il est aussi possible d'utiliser SDL_CreateWindowAndRenderer pour créer la fenêtre et son renderer
-
     if (pRenderer == NULL) {//Si le renderer est vide, on stop le programme
         printf("Erreur lors de la création du render : %s\n",SDL_GetError());
         return EXIT_FAILURE;
@@ -54,38 +37,21 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     }
 
     pSurface = SDL_GetWindowSurface(pWindow);
-
-    pSurfaceSrc = SDL_CreateRGBSurface(0,pSurface->w,pSurface->h,32,0,0,0,0);
-    //Création de la surface avec SDL_CreateRGBSurface
-
-    if(pSurface == NULL || pSurfaceSrc == NULL) {
+    if(pSurface == NULL) {
         printf("La creation de la surface a echoue : %s", SDL_GetError());
         return EXIT_FAILURE;
     }
 
-    Uint32 color = SDL_MapRGB(pSurface->format,255,100,0);
-    //Couleur qui va être apppliquée sur la surface, ici du orange
-
-    Uint32 color2 = SDL_MapRGB(pSurfaceSrc->format,0,100,255);
-    //Couleur qui va être apppliquée sur la surface, ici du bleu
-
-    SDL_FillRect(pSurface,NULL, color);
-    //SDL_FillRect permet de remplir la surface d'une couleur
-    SDL_FillRect(pSurfaceSrc,NULL, color2);
-
-    SDL_UpdateWindowSurface(pWindow);
-    //Mise à jour de l'affichage (couleur orange)
-    SDL_Delay(1500);
-
-    SDL_BlitSurface(pSurfaceSrc,NULL,pSurface,NULL);
-    //Copie d'une surface(bleu) vers une autre surface(orange)
-
-    SDL_UpdateWindowSurface(pWindow);
-    //Mise à jour de l'affichage (couleur bleu)
-
+    pTexture = SDL_CreateTexture(pRenderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,100,100);
+    /* Création de la texture avec SDL_CreateTexture(renderer, format de pixel, restriction d'accès, largeur, hauteur)
+        Format : RGBA
+        Accès : Permet d'utiliser la texture comme cible de rendu (comme un renderer)
+    */
 
     SDL_Delay(1500);
 
+
+    SDL_DestroyTexture(pTexture);
     SDL_FreeSurface(pSurface);
     SDL_DestroyRenderer(pRenderer); //Suppression du renderer
     SDL_DestroyWindow(pWindow); //Suppression de la fenêtre
