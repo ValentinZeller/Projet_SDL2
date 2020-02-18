@@ -52,7 +52,8 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
         Accès : Permet d'utiliser la texture comme cible de rendu (comme un renderer)
     */
 
-
+    pTexture = SDL_CreateTextureFromSurface(pRenderer,pSurface);
+    //Création d'une texture à partir d'une surface avec SDL_CreateTextureFromSurface(renderer,surface)
 
 
     SDL_QueryTexture(pTexture,NULL,NULL,&dist.w,&dist.h);
