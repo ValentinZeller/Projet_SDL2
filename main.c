@@ -48,6 +48,16 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
         Accès : Permet d'utiliser la texture comme cible de rendu (comme un renderer)
     */
 
+    SDL_SetRenderDrawColor(pRenderer,255,0,0,255);
+
+    SDL_SetRenderTarget(pRenderer,pTexture);
+    /* Dessin sur la texture */
+
+    SDL_RenderFillRect(pRenderer, &rect);
+
+    SDL_SetRenderTarget(pRenderer, NULL); //Fin du dessin sur la texture
+
+    SDL_RenderPresent(pRenderer); //Pour le moment on ne voit pas la texture
     SDL_Delay(1500);
 
 
