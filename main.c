@@ -15,12 +15,10 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
 
     //Initialisation d'un rectangle {position horizontale, position verticale, largeur, hauteur)
     SDL_Rect rect = {0,0,100,100};
-    //Initialisation d'un point {position horizontale, position verticale}
-    SDL_Point point = {0,0};
-
 
     //Initialisation d'un pointeur de type surface
     SDL_Surface *pSurface= NULL;
+    SDL_Surface *pSurfaceSrc = NULL;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0){
     //SDL_Init permet d'initialiser la SDL
@@ -55,13 +53,12 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
 
     }
 
-    pSurface = SDL_CreateRGBSurface(0,100,100,32,0,0,0,0);
+    pSurface = SDL_GetWindowSurface(pWindow);
+
+    pSurfaceSrc = SDL_CreateRGBSurface(0,pSurface->w,pSurface->h,32,0,0,0,0);
     //Création de la surface avec SDL_CreateRGBSurface
 
-    pSurface = SDL_GetWindowSurface(pWindow);
-    //Surface de la fenêtre
-
-    if(pSurface == NULL) {
+    if(pSurface == NULL || pSurfaceSrc == NULL) {
         printf("La creation de la surface a echoue : %s", SDL_GetError());
         return EXIT_FAILURE;
     }
@@ -69,11 +66,23 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     Uint32 color = SDL_MapRGB(pSurface->format,255,100,0);
     //Couleur qui va être apppliquée sur la surface, ici du orange
 
+    Uint32 color2 = SDL_MapRGB(pSurfaceSrc->format,0,100,255);
+    //Couleur qui va être apppliquée sur la surface, ici du bleu
+
     SDL_FillRect(pSurface,NULL, color);
     //SDL_FillRect permet de remplir la surface d'une couleur
+    SDL_FillRect(pSurfaceSrc,NULL, color2);
 
     SDL_UpdateWindowSurface(pWindow);
-    //Mise à jour de l'affichage
+    //Mise à jour de l'affichage (couleur orange)
+    SDL_Delay(1500);
+
+    SDL_BlitSurface(pSurfaceSrc,NULL,pSurface,NULL);
+    //Copie d'une surface(bleu) vers une autre surface(orange)
+
+    SDL_UpdateWindowSurface(pWindow);
+    //Mise à jour de l'affichage (couleur bleu)
+
 
     SDL_Delay(1500);
 
