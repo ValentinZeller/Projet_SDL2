@@ -14,13 +14,17 @@
 				<Option parameters="-t -w" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="../SDL2-2.0.10/i686-w64-mingw32/include" />
+					<Add directory="../SDL2-2.0.10/i686-w64-mingw32/include/SDL2" />
+					<Add directory="../SDL2_image-2.0.5/i686-w64-mingw32/include/SDL2" />
 				</Compiler>
 				<Linker>
 					<Add option="-lmingw32" />
 					<Add library="../SDL2-2.0.10/i686-w64-mingw32/lib/libSDL2main.a" />
 					<Add library="../SDL2-2.0.10/i686-w64-mingw32/lib/libSDL2.dll.a" />
+					<Add library="../SDL2_image-2.0.5/i686-w64-mingw32/lib/libSDL2_image.a" />
+					<Add library="../SDL2_image-2.0.5/i686-w64-mingw32/lib/libSDL2_image.dll.a" />
 					<Add directory="../SDL2-2.0.10/i686-w64-mingw32/lib" />
+					<Add directory="../SDL2_image-2.0.5/i686-w64-mingw32/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">

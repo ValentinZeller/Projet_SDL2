@@ -13,7 +13,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "SDL2/SDL.h" //Appel de la bibliothèque SDL2
+#include "SDL.h" //Appel de la bibliothèque SDL2
+#include "SDL_image.h" //Appel de la bibliothèque SDL2_image
 
 typedef struct sdl_manager{
     SDL_Window *pWindow;
