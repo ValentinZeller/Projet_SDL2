@@ -6,25 +6,32 @@
 int main(int argc, char *argv[]) //Modification du main pour inclure le main de la SDL2
 {
     sdl_manager sdl; //Gestion de la sdl niveau affichage
-    SDL_Rect rect = {0,0,240,400};
+    SDL_Rect rect = {100,100,240,400},src= {0,0,16,28};
     SDL_Surface *image = NULL;
 
     //Initialisation de la SDL
     SDLManager_Init(&sdl);
 
+    SDL_SetRenderDrawColor(sdl.pRenderer,255,255,255,1);
+    SDL_RenderClear(sdl.pRenderer);
+
     //Chargement de l'image
-    image = IMG_Load("minecraft.png");
+    image = IMG_Load("tiles.png");
 
     //Création de la texture
     sdl.pTexture = SDL_CreateTextureFromSurface(sdl.pRenderer,image);
 
-    //Préparation à l'affichage
-    SDL_RenderCopy(sdl.pRenderer,sdl.pTexture,NULL,&rect);
+    int i =0;
 
-    //Raffraichissement
-    SDL_RenderPresent(sdl.pRenderer);
-
-    SDL_Delay(2500);
+    //Sprite animé
+    for (i=0;i<8;i++) {
+        src.x = i*16;
+        //Préparation à l'affichage
+        SDL_RenderCopy(sdl.pRenderer,sdl.pTexture,&src,&rect);
+        //Raffraichissement
+        SDL_RenderPresent(sdl.pRenderer);
+        SDL_Delay(400);
+    }
 
     //Arrêt de la SDL
     SDLManager_Stop(&sdl);
