@@ -23,7 +23,7 @@ void SDLManager_Init(sdl_manager *sdl) {
     }
 
     sdl->pWindow = SDL_CreateWindow("Une fenetre SDL",SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_RESIZABLE);
+        SDL_WINDOWPOS_CENTERED, 1024, 720, SDL_WINDOW_RESIZABLE);
     if (sdl->pWindow == NULL) { //Si la fenêtre est vide, on stop le programme
         printf("Erreur lors de la creation d'une fenetre : %s\n", SDL_GetError());
         return EXIT_FAILURE;
