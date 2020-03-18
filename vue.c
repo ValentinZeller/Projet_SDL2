@@ -216,3 +216,22 @@ void SDL_DrawFilledRectangle(SDL_Renderer *pRenderer, int nPosX, int nPosY, int 
     SDL_RenderFillRect(pRenderer,&rect);
     SDLManager_Refresh(pRenderer,nDelay);
 }
+
+void AfficherMap(sdl_manager sdl,int cMap[][31],SDL_Rect Camera,SDL_Rect src, SDL_Rect dst) {
+    //i et j pour placer les tiles à l'écran, tileindex pour sélectionner la bonne tile dans le tileset
+    int i,j, tileindex;
+    for (i=Camera.x;i<Camera.w;i++) {
+        for (j=Camera.y;j<Camera.h;j++) {
+
+            dst.x = i*TILE_SIZE;
+            dst.y = j*TILE_SIZE;
+
+            tileindex = cMap[j][i];
+
+            src.x = (tileindex % TILESET_LARGEUR)*TILE_SIZE;
+            src.y = (int)(tileindex / TILESET_HAUTEUR)*TILE_SIZE;
+
+            SDL_RenderCopy(sdl.pRenderer,sdl.pTexture,&src,&dst);
+        }
+    }
+}

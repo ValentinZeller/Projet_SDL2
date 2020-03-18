@@ -36,4 +36,6 @@ extern void SDL_DrawFilledCircle(SDL_Renderer* pRenderer, int nCentreX,int nCent
 
 extern void SDL_DrawRectangle(SDL_Renderer *pRenderer, int nPosX, int nPosY, int nLargeur, int nHauteur,int nDelay,SDL_Color color);
 extern void SDL_DrawFilledRectangle(SDL_Renderer *pRenderer, int nPosX, int nPosY, int nLargeur, int nHauteur,int nDelay,SDL_Color color);
+
+void AfficherMap(sdl_manager sdl,int cMap[][31],SDL_Rect Camera,SDL_Rect src, SDL_Rect dst);
 #endif // VUE_H_INCLUDED
