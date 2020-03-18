@@ -3,6 +3,7 @@
 #include "vue.h"
 #include "gameobjet.h"
 #include "map.h"
+#include "camera.h"
 
 
 
@@ -12,8 +13,8 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     SDL_Rect Rect_dest = {0,0,TILE_SIZE,TILE_SIZE},Rect_src = {0,0,TILE_SIZE,TILE_SIZE};
     SDL_Rect Camera = {0,0,10,10};
     SDL_Event event;
-    SDL_Color color = {255,255,0,1};
     SDL_Surface *tileset;
+    Uint8 *keystates = SDL_GetKeyboardState(NULL);
 
     //Le niveau
     int cMap[HAUTEUR][LARGEUR] = {0};
@@ -36,34 +37,25 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
                         SDLManager_Stop(&sdl);
                         return 0;
                         break;
-                case SDL_KEYDOWN :
-                    //Déplacement de la caméra
-                    if ((event.key.keysym.sym == SDLK_UP)&&(Camera.y > 0)) {
-                        Camera.y += -2;
-                        Camera.h += -2;
-                    }
-                    if ((event.key.keysym.sym == SDLK_LEFT)&&(Camera.x > 0)) {
-                        Camera.x += -2;
-                        Camera.w += -2;
-
-                    }
-                    if ((event.key.keysym.sym == SDLK_RIGHT)&&(Camera.w < LARGEUR)) {
-                        Camera.x += 2;
-                        Camera.w += 2;
-                    }
-                    if ((event.key.keysym.sym == SDLK_DOWN)&&(Camera.h < HAUTEUR)) {
-                        Camera.y += 2;
-                        Camera.h += 2;
-                    }
             }
+        }
+        if ((keystates[SDL_SCANCODE_DOWN])&&(Camera.h < HAUTEUR)) {
+            MoveCameraVertical(&Camera,1);
+        }
+        if ((keystates[SDL_SCANCODE_UP])&&(Camera.y > 0)) {
+            MoveCameraVertical(&Camera,-1);
+        }
+        if ((keystates[SDL_SCANCODE_RIGHT])&&(Camera.w < LARGEUR)) {
+            MoveCameraHorizontal(&Camera,1);
+        }
+        if ((keystates[SDL_SCANCODE_LEFT])&&(Camera.x > 0)) {
+            MoveCameraHorizontal(&Camera,-1);
         }
         //Affichage de la map vue par la caméra
         AfficherMap(sdl,cMap,Camera,Rect_src,Rect_dest);
         SDLManager_Refresh(sdl.pRenderer,0);
         SDLManager_ClearScreen(sdl.pRenderer);
     }
-    //Arrêt de la SDL
-    SDLManager_Stop(&sdl);
     return 0;
 }
 

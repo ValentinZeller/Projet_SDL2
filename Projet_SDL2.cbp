@@ -44,6 +44,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="camera.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="camera.h" />
 		<Unit filename="cercle.c">
 			<Option compilerVar="CC" />
 		</Unit>
