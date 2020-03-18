@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include "SDL.h" //Appel de la bibliothèque SDL2
 #include "SDL_image.h" //Appel de la bibliothèque SDL2_image
+#include "map.h"
 
 typedef struct sdl_manager{
     SDL_Window *pWindow;

@@ -216,5 +216,3 @@ void SDL_DrawFilledRectangle(SDL_Renderer *pRenderer, int nPosX, int nPosY, int 
     SDL_RenderFillRect(pRenderer,&rect);
     SDLManager_Refresh(pRenderer,nDelay);
 }
-
-
