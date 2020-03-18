@@ -15,24 +15,15 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
     SDL_Color color = {255,255,0,1};
     SDL_Surface *tileset;
 
-    //Création d'un rectangle
-    tRectangle rect1;
-    creerRectangle(&rect1,10,10,200,200);
-
     //Le niveau
     int cMap[HAUTEUR][LARGEUR] = {0};
-
     InitRandomMap(cMap);
-    AfficherMap(sdl,cMap,Camera,Rect_src,Rect_dest);
 
     //Initialisation de la SDL
     SDLManager_Init(&sdl);
 
-
     tileset = IMG_Load("assets/Terrain.png");
     sdl.pTexture = SDL_CreateTextureFromSurface(sdl.pRenderer,tileset);
-    AfficherMap(sdl,cMap,Camera,Rect_src,Rect_dest);
-    SDLManager_Refresh(sdl.pRenderer,500);
 
     //Boucle principale
     while (1) {
@@ -46,14 +37,30 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
                         return 0;
                         break;
                 case SDL_KEYDOWN :
-                    //Lors de la pression sur une touche, apparition d'un rectangle
-                    SDL_DrawFilledRectangle(sdl.pRenderer,rand()%1024,rand()%720,20,20,1,color);
-                case SDL_QUIT :
-                    printf("Fin de la SDL2");
+                    //Déplacement de la caméra
+                    if ((event.key.keysym.sym == SDLK_UP)&&(Camera.y > 0)) {
+                        Camera.y += -2;
+                        Camera.h += -2;
+                    }
+                    if ((event.key.keysym.sym == SDLK_LEFT)&&(Camera.x > 0)) {
+                        Camera.x += -2;
+                        Camera.w += -2;
 
-
+                    }
+                    if ((event.key.keysym.sym == SDLK_RIGHT)&&(Camera.w < LARGEUR)) {
+                        Camera.x += 2;
+                        Camera.w += 2;
+                    }
+                    if ((event.key.keysym.sym == SDLK_DOWN)&&(Camera.h < HAUTEUR)) {
+                        Camera.y += 2;
+                        Camera.h += 2;
+                    }
             }
         }
+        //Affichage de la map vue par la caméra
+        AfficherMap(sdl,cMap,Camera,Rect_src,Rect_dest);
+        SDLManager_Refresh(sdl.pRenderer,0);
+        SDLManager_ClearScreen(sdl.pRenderer);
     }
     //Arrêt de la SDL
     SDLManager_Stop(&sdl);
