@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) //Modification du main pour inclure le main de 
                         break;
             }
         }
+        //Gestion de plusieurs touches en même temps
         if ((keystates[SDL_SCANCODE_DOWN])&&(Camera.h < HAUTEUR)) {
             MoveCameraVertical(&Camera,1);
         }
